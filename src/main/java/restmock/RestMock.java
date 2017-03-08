@@ -1,9 +1,10 @@
 package restmock;
 
-import restmock.request.HttpMethod;
-import restmock.request.Route;
-import restmock.request.RouteMappingPrefix;
-import restmock.request.RouteRegister;
+import org.reflections.Reflections;
+import restmock.request.*;
+import restmock.utils.CollectionsUtils;
+
+import java.util.Set;
 
 public class RestMock {
 	
@@ -41,5 +42,20 @@ public class RestMock {
 
 	public static RouteMappingPrefix prefix(String mappingPrefix){
 		return  new RouteMappingPrefix(mappingPrefix);
+	}
+
+	/**
+	 * scan package to regist the route
+	 * @param scanPackage
+	 */
+	public static void scanInstall(String scanPackage) throws IllegalAccessException, InstantiationException {
+		Reflections reflections = new Reflections(scanPackage);
+		Set<Class<?>> routeInstalls =  reflections.getTypesAnnotatedWith(Install.class);
+		if(CollectionsUtils.isNotEmpty(routeInstalls)){
+			for (Class clazz:routeInstalls){
+				RouteInstall routeInstall = (RouteInstall) clazz.newInstance();
+				routeInstall.install();
+			}
+		}
 	}
 }
