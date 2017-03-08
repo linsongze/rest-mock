@@ -10,17 +10,16 @@ import restmock.response.Response;
 public class ReplacerParametersVisitor implements Visitor<Response> {
 	
 	private final HttpServletRequest request;
-	
+	private static	String regex = "\\$\\{(.+?)\\}";
+	private static Pattern pattern = Pattern.compile(regex);
 	public ReplacerParametersVisitor(HttpServletRequest request) {
 		this.request = request;
 	}
 
 	@Override
 	public void visit(Response response) {
-		String regex = "\\$\\{(.+?)\\}";
-		
 		String input = response.getContent();
-		Matcher matcher = Pattern.compile(regex).matcher(input);
+		Matcher matcher = pattern.matcher(input);
 		
 		while (matcher.find()) 
 			input = replaceWildTags(input, matcher);

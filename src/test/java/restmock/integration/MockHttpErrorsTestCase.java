@@ -61,5 +61,12 @@ public class MockHttpErrorsTestCase extends IntegrationTestBase {
 		assertEquals(HttpServletResponse.SC_FORBIDDEN, exchange.getResponseStatus());
 		assertEquals("Forbidden POST" + lineSeparator(), exchange.getResponseContent());
 	}
+	@Test
+	public void testPrefix()throws Exception{
+		RestMock.prefix("/prefix").whenGet("ptest").thenReturnText("Hello");
+		ContentExchange exchange = sendRequestAndWaitForDone(baseUrl + "/prefix/ptest", HttpMethod.GET);
+		assertEquals(HttpServletResponse.SC_OK, exchange.getResponseStatus());
+		System.out.println(exchange.getResponseContent());
+	}
 
 }

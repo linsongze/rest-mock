@@ -2,6 +2,7 @@ package restmock;
 
 import restmock.request.HttpMethod;
 import restmock.request.Route;
+import restmock.request.RouteMappingPrefix;
 import restmock.request.RouteRegister;
 
 public class RestMock {
@@ -38,4 +39,7 @@ public class RestMock {
 		server.clean();
 	}
 
+	public static RouteMappingPrefix prefix(String mappingPrefix){
+		return  new RouteMappingPrefix(mappingPrefix);
+	}
 }
